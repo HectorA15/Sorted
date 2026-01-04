@@ -1,40 +1,45 @@
 
 from persistence.sqlite import FileHistoryDB
 from core.fs_utils import move_file, get_desktop_path
+from engine.rules import load_rules, Rule
 
-
-def apply_rules(source_directory, rules, batch_id):
-    logs = []
+def apply_rules(source_directory, rules_yaml_path, batch_id):
+    rules = load_rules(rules_yaml_path)  # Cargar del YAML
     db = FileHistoryDB()  # keep one DB session per run
-    
-    for extension, dest_folder in rules.items():
-        matching_files = list(source_directory.glob(f"**/*{extension}"))
-        matching_files = [f for f in matching_files if not str(f).startswith(dest_folder)]
-        
-        for file_path in matching_files:
-            try:
-                source_file = str(file_path)
-                move_record = f'{source_file} --> {dest_folder}'
-                logs.append(move_record)
-                move_file(source=source_file, dest_dir=dest_folder)
-                db.log_move(batch_id, source_file, dest_folder, extension)
+    logs = []
+    for rule in rules:
+        files = source_directory.glob(f"**/*")
+        for file in files:
+            try:  
+                if rule.matches(file):
+                    result = rule.apply(file)
+                    db.log_move(
+                        batch_id,
+                        str(result["source"]),          # ← str()
+                        str(result["destination"]),     # ← str()
+                        result["rule_name"]
+                    )
+                    break
             except Exception as e:
-                print(f"Error moving {file_path}: {e}")
+                print(f"Error moving {file}: {e}")
     
     db.close()
-    return logs
+    return logs 
     
-def dry_run(source_directory, rules):
-    
+def dry_run(source_directory, rules_yaml_path):
+    rules = load_rules(rules_yaml_path)
     logs = []
     
-    for extension, dest_folder in rules.items():
-        matching_files = list(source_directory.glob(f"**/*{extension}"))
-        matching_files = [f for f in matching_files if not str(f).startswith(dest_folder)]
-        
-        for file_path in matching_files:
-            source_file = str(file_path)
-            move_record = f'{source_file} --> {dest_folder}'
-            logs.append(move_record)
-
+    for rule in rules:
+        files = source_directory.glob(f"**/*")
+        for file in files:
+            if file.is_file() and rule.matches(str(file)):
+                destination = rule.actions[0].destination
+                # Normalizar paths para comparar
+                file_str = str(file).replace("\\", "/")
+                dest_str = destination.replace("\\", "/")
+                
+                if not file_str.startswith(dest_str):
+                    logs.append(f"{file} --> {destination}")
+    
     return logs

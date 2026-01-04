@@ -1,0 +1,25 @@
+# Sorted - Configuración de reglas
+# Cada regla tiene: nombre, filtros (matchers), y acciones
+
+rules:
+  - name: "word"
+    filters:
+      - extension: docx
+    actions:
+      - move: "C:/Users/crusc/OneDrive/Desktop/DOCX"
+
+  - name: 'homework word'
+    priority: 1
+    filters:
+        - name_starts_with: "HACO"
+        - extension: docx
+    actions: 
+        - move: "C:/Users/crusc/OneDrive/Desktop/Tareas/words"
+  
+  - name: 'homework pdf'
+    priority: 1
+    filters:
+        - name_starts_with: "HACO"
+        - extension: pdf
+    actions: 
+        - move: "C:/Users/crusc/OneDrive/Desktop/Tareas/pedefes"

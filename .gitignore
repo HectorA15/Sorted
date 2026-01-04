@@ -19,6 +19,10 @@ migrations/__pycache__/
 # Byte-compiled / caches
 *.sqlite3
 
+# Project-specific
+sorted_history.db
+TODOS.txt
+
 # IDEs / editors
 .vscode/
 .idea/
