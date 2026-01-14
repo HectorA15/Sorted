@@ -1,52 +1,72 @@
-﻿# Sorted - File Auto-Organizer
+# Sorted — File Auto-Organizer
 
-A powerful, intelligent file organization tool that automatically sorts your files based on customizable rules. Similar to organize by tfeldmann, but with watch mode, SQLite history tracking, and batch undo capabilities.
+Una herramienta para organizar archivos automáticamente según reglas configurables (YAML). Incluye modo *watch*, historial en SQLite y deshacer por lotes.
 
-## Features
+> Nota: este README fue ajustado con asistencia de IA. Más detalles en AI_NOTICE.md.
 
-### Core Features
-- YAML-based Rules Engine - Define file organization rules declaratively
-- Watch Mode - Automatic real-time monitoring and organizing of new files
-- SQLite History - Complete audit trail with batch_id tracking
-- Batch Undo - Revert entire file organization sessions
-- Dry-run Mode - Preview changes before applying
-- Interactive Confirmation - Approve changes before executing
+## Características principales
+- Reglas declarativas en YAML.
+- Modo Watch: monitor en tiempo real para nuevos archivos.
+- Historial en SQLite con tracking por batch_id.
+- Deshacer por lotes.
+- Modo dry-run y confirmación interactiva.
+- Matchers avanzados: por extensión, patrones en nombre, regex, y arquitectura extensible para matchers personalizados.
 
-### Advanced Matchers
-- Extension matching (.pdf, .docx, etc.)
-- Filename pattern matching (starts with, contains, ends with)
-- Regular expression patterns
-- Extensible matcher architecture for custom logic
+## Quick start
 
-## Quick Start
+### Instalación
+Requisitos: Python 3.10+ (ejemplo)
 
-### Installation
-\\\ash
+```bash
 git clone https://github.com/HectorA15/Sorted.git
 cd Sorted
+python -m venv .venv
+# Linux / macOS
+source .venv/bin/activate
+# Windows (PowerShell)
+.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-\\\
+```
 
-### Usage
-\\\ash
+### Uso
+
+```bash
 python -m cli.main
-\\\
+```
 
-Then select:
-- Option 1: Manual organize (dry-run + confirm)
-- Option 2: Watch mode (automatic monitoring)
-- Option 3: Undo last batch
+Opciones principales (selector interactivo):
+1. Manual organize (dry-run + confirm)
+2. Watch mode (monitor automático)
+3. Undo last batch
 
-## Configuration
+### Configuración
+Edita `rules.yaml` para definir tus reglas de organización (extensiones, patrones, destinos, etc.).
 
-Edit rules.yaml to define your organization rules.
+### Arquitectura
+- core/ — operaciones de archivos
+- engine/ — motor de reglas y matchers
+- cli/ — CLI interactiva y watch mode
+- persistence/ — manejo de SQLite y auditoría
 
-## Architecture
-- core/ - File operations
-- engine/ - Rules engine and matchers
-- cli/ - Interactive CLI and watch mode
-- persistence/ - SQLite database
+### Desarrollo
+- Formatea con `black` y ordena imports con `isort`.
+- Linter recomendado: `ruff` o `flake8`.
+- Instala pre-commit si quieres hooks automáticos:
 
-## License
+```bash
+pre-commit install
+pre-commit run --all-files
+```
 
-MIT License
+### Tests
+Ejecuta los tests:
+
+```bash
+pytest -q
+```
+
+### Licencia
+Este proyecto está bajo la licencia MIT. Consulta el archivo `LICENSE` para el texto completo.
+
+### Contacto
+Héctor — GitHub: [@HectorA15](https://github.com/HectorA15) — email: correo@example.com
