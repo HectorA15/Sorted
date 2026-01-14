@@ -1,52 +1,72 @@
-﻿# Sorted - File Auto-Organizer
+# Sorted — File Auto-Organizer
 
-A powerful, intelligent file organization tool that automatically sorts your files based on customizable rules. Similar to organize by tfeldmann, but with watch mode, SQLite history tracking, and batch undo capabilities.
+A tool to automatically organize files according to configurable rules (YAML). Includes a watch mode, SQLite history tracking, and batch undo functionality.
 
-## Features
+> Note: this README was adjusted with assistance from AI. See AI_NOTICE.md for details.
 
-### Core Features
-- YAML-based Rules Engine - Define file organization rules declaratively
-- Watch Mode - Automatic real-time monitoring and organizing of new files
-- SQLite History - Complete audit trail with batch_id tracking
-- Batch Undo - Revert entire file organization sessions
-- Dry-run Mode - Preview changes before applying
-- Interactive Confirmation - Approve changes before executing
+## Main features
+- Declarative rules in YAML.
+- Watch mode: real-time monitoring for new files.
+- SQLite history with batch_id tracking.
+- Batch undo.
+- Dry-run mode and interactive confirmation.
+- Advanced matchers: by extension, filename patterns, regex, and an extensible matcher architecture.
 
-### Advanced Matchers
-- Extension matching (.pdf, .docx, etc.)
-- Filename pattern matching (starts with, contains, ends with)
-- Regular expression patterns
-- Extensible matcher architecture for custom logic
-
-## Quick Start
+## Quick start
 
 ### Installation
-\\\ash
+Requirements: Python 3.10+ (example)
+
+```bash
 git clone https://github.com/HectorA15/Sorted.git
 cd Sorted
+python -m venv .venv
+# Linux / macOS
+source .venv/bin/activate
+# Windows (PowerShell)
+.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-\\\
+```
 
 ### Usage
-\\\ash
+
+```bash
 python -m cli.main
-\\\
+```
 
-Then select:
-- Option 1: Manual organize (dry-run + confirm)
-- Option 2: Watch mode (automatic monitoring)
-- Option 3: Undo last batch
+Main options (interactive selector):
+1. Manual organize (dry-run + confirm)
+2. Watch mode (automatic monitoring)
+3. Undo last batch
 
-## Configuration
+### Configuration
+Edit `rules.yaml` to define your organization rules (extensions, patterns, destinations, etc.).
 
-Edit rules.yaml to define your organization rules.
+### Architecture
+- core/ — file operations
+- engine/ — rules engine and matchers
+- cli/ — interactive CLI and watch mode
+- persistence/ — SQLite handling and audit
 
-## Architecture
-- core/ - File operations
-- engine/ - Rules engine and matchers
-- cli/ - Interactive CLI and watch mode
-- persistence/ - SQLite database
+### Development
+- Format code with `black` and sort imports with `isort`.
+- Recommended linter: `ruff` or `flake8`.
+- Install pre-commit for automatic hooks:
 
-## License
+```bash
+pre-commit install
+pre-commit run --all-files
+```
 
-MIT License
+### Tests
+Run tests:
+
+```bash
+pytest -q
+```
+
+### License
+This project is licensed under the MIT License. See the `LICENSE` file for the full text.
+
+### Contact
+Héctor — GitHub: [@HectorA15](https://github.com/HectorA15) — email: correo@example.com
