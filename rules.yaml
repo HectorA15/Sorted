@@ -1,25 +1,32 @@
-# Sorted - Configuración de reglas
-# Cada regla tiene: nombre, filtros (matchers), y acciones
+﻿# Sorted - File Organization Rules
+# Each rule has: name, priority (lower = higher priority), filters, and actions
 
 rules:
-  - name: "word"
+  - name: "Organize by extension"
+    priority: 10
     filters:
-      - extension: docx
+      - extension: [pdf, docx, xlsx]
     actions:
-      - move: "C:/Users/crusc/OneDrive/Desktop/DOCX"
+      - move: "Documents"
 
-  - name: 'homework word'
-    priority: 1
+  - name: "Organize images"
+    priority: 10
     filters:
-        - name_starts_with: "HACO"
-        - extension: docx
-    actions: 
-        - move: "C:/Users/crusc/OneDrive/Desktop/Tareas/words"
-  
-  - name: 'homework pdf'
-    priority: 1
+      - extension: [jpg, png, gif, jpeg]
+    actions:
+      - move: "Pictures"
+
+  - name: "Organize videos"
+    priority: 10
     filters:
-        - name_starts_with: "HACO"
-        - extension: pdf
-    actions: 
-        - move: "C:/Users/crusc/OneDrive/Desktop/Tareas/pedefes"
+      - extension: [mp4, avi, mkv, mov]
+    actions:
+      - move: "Videos"
+
+  - name: "Archive by prefix"
+    priority: 5
+    filters:
+      - name_starts_with: "archive"
+      - extension: [zip, rar, 7z]
+    actions:
+      - move: "Archives"
