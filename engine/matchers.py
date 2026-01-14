@@ -49,3 +49,14 @@ class RegexMatcher(Matcher):
     def matches(self, file_path):
         name = Path(file_path).stem
         return self.regex.search(name) is not None
+    
+class dateMatcher(Matcher):
+    pass
+
+class sizeMatcher(Matcher):
+    pass
+
+class mimeTypeMatcher(Matcher):
+    pass
+
+

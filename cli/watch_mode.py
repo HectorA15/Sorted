@@ -78,29 +78,34 @@ class MyHandler(FileSystemEventHandler):
         # Intento inmediato para archivos rápidos (copias, archivos pequeños)
         time.sleep(2)
         self._try_process(event, checks=2, interval=0.5)
-
+ 
     def on_modified(self, event):
         # Backup para archivos que tardan (descargas, renombrados)
         self._try_process(event, checks=4, interval=1.0)
+
+    def on_moved(self, event):
+        # Manejar archivos movidos al Desktop (event.dest_path)
+        pseudo_event = type("Obj", (), {
+            "src_path": getattr(event, "dest_path", event.src_path),
+            "is_directory": event.is_directory
+        })
+        self._try_process(pseudo_event, checks=3, interval=1.0)
             
-#create Observer
-observer = Observer()
+def main():
+    observer = Observer()
+    observer.schedule(MyHandler(rules), path=get_desktop_path(), recursive=False)
+    observer.start()
+    print("Watch mode started. Press Ctrl+C to stop.")
+    try:
+        while True:
+            time.sleep(1) # avoid high CPU
+    except KeyboardInterrupt:
+        observer.stop()
+        print("\nWatch mode stopped.")
+    observer.join()
 
 
-
-# Tell observer what to watch and what handler to use
-observer.schedule(MyHandler(rules), path=get_desktop_path(), recursive=False)
-
-# Start watching
-observer.start()
-
-# Keep it running (Ctrl+C to stop)
-try:
-    while True:
-        time.sleep(1) # avoid high CPU
-except KeyboardInterrupt:
-    observer.stop()
-
-observer.join()
+if __name__ == "__main__":
+    main()
 
 

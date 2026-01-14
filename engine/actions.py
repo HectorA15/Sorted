@@ -10,4 +10,15 @@ class MoveAction(Action):
         self.destination = destination
     
     def execute(self, file_path):
-        move_file(file_path, self.destination)
+        # Returns the actual full path after moving
+        return move_file(file_path, self.destination)
+        
+class CopyAction(Action):
+    pass
+
+class deleteAction(Action):
+    pass
+
+class RenameAction(Action):
+    pass
+

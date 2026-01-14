@@ -1,6 +1,6 @@
 import yaml
-from .matchers import Matcher, ExtensionMatcher, NameStartsWithMatcher, NameEndsWithMatcher, NameContainsMatcher, RegexMatcher
-from .actions import MoveAction
+from engine.matchers import Matcher, ExtensionMatcher, NameStartsWithMatcher, NameEndsWithMatcher, NameContainsMatcher, RegexMatcher
+from engine.actions import MoveAction
 
 class Rule:
     def __init__(self, name, matchers, actions, priority=10):
@@ -24,8 +24,9 @@ class Rule:
         
         for action in self.actions:
             if isinstance(action, MoveAction):
-                action.execute(file_path)
-                result["destination"] = action.destination
+                # Capture the actual destination path returned by move_file
+                dest_path = action.execute(file_path)
+                result["destination"] = dest_path
                 
         return result
             
@@ -68,7 +69,7 @@ def load_rules(yaml_path):
         name = rule_dict['name']
         priority = rule_dict.get('priority', 10)  # default 10
         matchers = load_matchers(rule_dict['filters'])
-        actions = load_actions(rule_dict['actions'])  # similar a load_matchers
+        actions = load_actions(rule_dict['actions'])  
         
         rule = Rule(name, matchers, actions, priority)
         rules.append(rule)
@@ -84,5 +85,6 @@ def load_actions(actions_list):
             destination = action_dict['move']
             action = MoveAction(destination)
             actions.append(action)
+        
             
     return actions
