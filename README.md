@@ -69,4 +69,4 @@ pytest -q
 This project is licensed under the MIT License. See the `LICENSE` file for the full text.
 
 ### Contact
-Héctor — GitHub: [@HectorA15](https://github.com/HectorA15) — email: correo@example.com
+Héctor — GitHub: [@HectorA15](https://github.com/HectorA15)
